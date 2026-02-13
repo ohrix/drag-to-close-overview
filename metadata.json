@@ -1,8 +1,8 @@
 {
-  "uuid": "drag-to-close-overview@felix.local",
-  "name": "Drag To Close In Overview",
+  "uuid": "drag-to-close-overview@ohrix.github.com",
+  "name": "Drag To Close Overview",
   "description": "Close overview windows by dragging them to the bottom edge.",
   "shell-version": ["49"],
-  "url": "https://example.com/drag-to-close-overview",
+  "url": "https://github.com/ohrix/drag-to-close-overview",
   "version": 1
 }

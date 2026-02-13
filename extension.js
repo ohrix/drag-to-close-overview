@@ -118,6 +118,7 @@ export default class DragToCloseInOverviewExtension extends Extension {
             metaWindow,
             startWorkspace: metaWindow.get_workspace?.() ?? null,
             dragStarted: false,
+            lastY: y,
             maxY: y,
             armedAtMs: Date.now(),
         };
@@ -143,8 +144,11 @@ export default class DragToCloseInOverviewExtension extends Extension {
         if (y > state.maxY)
             state.maxY = y;
 
-        if (this._activeGesture && this._activeGesture.touchKey === touchKey && y > this._activeGesture.maxY)
-            this._activeGesture.maxY = y;
+        if (this._activeGesture && this._activeGesture.touchKey === touchKey) {
+            this._activeGesture.lastY = y;
+            if (y > this._activeGesture.maxY)
+                this._activeGesture.maxY = y;
+        }
 
         return Clutter.EVENT_PROPAGATE;
     }
@@ -180,8 +184,11 @@ export default class DragToCloseInOverviewExtension extends Extension {
         this._activeGesture.dragStarted = true;
 
         const y = typeof dragEvent?.y === "number" ? dragEvent.y : null;
-        if (typeof y === "number" && y > this._activeGesture.maxY)
-            this._activeGesture.maxY = y;
+        if (typeof y === "number") {
+            this._activeGesture.lastY = y;
+            if (y > this._activeGesture.maxY)
+                this._activeGesture.maxY = y;
+        }
 
         return DRAG_CONTINUE;
     }
@@ -199,15 +206,12 @@ export default class DragToCloseInOverviewExtension extends Extension {
         const pointer = global.get_pointer?.() ?? [null, null, null];
         const pointerY = typeof pointer[1] === "number" ? pointer[1] : null;
         const eventY = typeof dragEvent?.y === "number" ? dragEvent.y : null;
+        const lastY = typeof gesture.lastY === "number" ? gesture.lastY : null;
         const maxY = typeof gesture.maxY === "number" ? gesture.maxY : null;
-        const effectiveY = Math.max(
-            pointerY ?? Number.NEGATIVE_INFINITY,
-            eventY ?? Number.NEGATIVE_INFINITY,
-            maxY ?? Number.NEGATIVE_INFINITY
-        );
+        const releaseY = Number.isFinite(eventY) ? eventY : lastY;
         const reachedBottomEdge =
-            Number.isFinite(effectiveY) &&
-            effectiveY >= global.stage.height - BOTTOM_EDGE_TRIGGER_PX;
+            Number.isFinite(releaseY) &&
+            releaseY >= global.stage.height - BOTTOM_EDGE_TRIGGER_PX;
 
         const currentWorkspace = gesture.metaWindow.get_workspace?.() ?? null;
         const workspaceChanged =
@@ -219,8 +223,9 @@ export default class DragToCloseInOverviewExtension extends Extension {
             touchKey: gesture.touchKey,
             pointerY,
             eventY,
+            lastY,
             maxY,
-            effectiveY,
+            releaseY,
             dragStarted: gesture.dragStarted,
             stageHeight: global.stage.height,
             bottomEdgePx: BOTTOM_EDGE_TRIGGER_PX,

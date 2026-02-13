@@ -1,21 +1,20 @@
+# Drag To Close Overview
 
-# Drag To Close In Overview
+GNOME Shell extension for closing windows in the app overview using a touch gesture:
 
-GNOME-Shell-Extension zum Schließen von Fenstern im App-Overview per Touch-Geste:
+- Touch a window preview in the overview
+- Drag it downward
+- Release it at the bottom edge of the screen
 
-- Fenster-Vorschau im Overview berühren
-- Nach unten ziehen
-- Am unteren Bildschirmrand loslassen
+The window will then be closed.
 
-Dann wird das Fenster geschlossen.
+## Installation (manual)
 
-## Installation (manuell)
-
-1. Ordner anlegen:
-   - `~/.local/share/gnome-shell/extensions/drag-to-close-overview@felix.local`
-2. Dateien `metadata.json` und `extension.js` in diesen Ordner kopieren.
-3. GNOME Shell neu laden:
-   - Wayland: ab- und wieder anmelden
-   - X11: `Alt` + `F2`, dann `r` und Enter
-4. Extension aktivieren:
-   - z. B. mit `gnome-extensions enable drag-to-close-overview@felix.local`
+1. Create the folder:
+   - `~/.local/share/gnome-shell/extensions/drag-to-close-overview@ohrix.github.com`
+2. Copy the files `metadata.json` and `extension.js` into this folder.
+3. Reload GNOME Shell:
+   - Wayland: log out and log back in
+   - X11: press `Alt` + `F2`, then `r` and Enter
+4. Enable the extension:
+   - for example with `gnome-extensions enable drag-to-close-overview@ohrix.github.com`
