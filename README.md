@@ -8,12 +8,6 @@ GNOME Shell extension for closing windows in the app overview using a touch gest
 
 The window will then be closed.
 
-## Installation
-
-Install from GNOME Extensions:
-
-- https://extensions.gnome.org/extension/9333/drag-to-close-overview/
-
 ## Installation (manual)
 
 1. Create the folder:
